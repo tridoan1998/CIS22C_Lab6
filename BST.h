@@ -46,7 +46,7 @@ private:
     //private helper function for postOrderPrint
     //recursively prints tree values in post order
 
-    void copyNode(Node* copy) const;
+    void copyNode(Node* copy);
     //recursive helper function to the copy constructor
 
     void freeNode(Node* root);
