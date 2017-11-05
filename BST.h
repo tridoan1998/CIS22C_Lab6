@@ -50,7 +50,7 @@ private:
     void copyNode(Node* copy);
     //recursive helper function to the copy constructor
 
-    void freeNode(Node* root);
+    	void freeNode(Node* root);
     //private helper function for the destructor
     //recursively frees the memory in the BST
 
@@ -83,13 +83,13 @@ public:
 
     /**constructors and destructor*/
 
-    BST();
+    	BST();
     //Instantiates a new BST
 
     BST(const BST &bst);
     //copy constructor
 
-    ~BST();
+    	~BST();
     //deallocates the tree memory
 
     /**access functions*/
@@ -121,7 +121,7 @@ public:
 
     /**manipulation procedures*/
 
-    void insert(bstdata data);
+    	void insert(bstdata data);
     //inserts new data into the BST
 
     void remove(bstdata data);
@@ -145,7 +145,8 @@ public:
 };
 
 
-/**constructors and destructor*/
+/****************constructors and destructor*****************/
+
 template <class bstdata>
 BST<bstdata>::BST()
 {
@@ -172,8 +173,29 @@ BST<bstdata>::BST(const BST &bst)
    copyNode(Node* copy);
 }
 
+template <class bstdata>
+void BST<bstdata>::copyNode(Node* copy)
+{
+	 root = copy->data;
+	 copyNode(copy->data->leftchild);
+	 copyNode(copy->data->rightchild);
+}
 
-/************ additional functions ************/
+/***************manipulation procedures***************/
+
+
+template <class bstdata>
+void BST<bstdata>::remove(bstdata data)
+{
+
+}
+
+template <class bstdata>
+BST<bstdata>::Node* deleteNode(Node* root, bstdata data)
+{
+
+}
+
 
 template <class bstdata>
 void BST<bstdata>::insert(bstdata data)
@@ -219,6 +241,8 @@ void BST<bstdata>::insertNode(Node* root, bstdata data)
 
 	}
 }
+
+/************ additional functions ************/
 
 template <class bstdata>
 void BST<bstdata>::inOrderPrint(ostream& out, Node* root) const
