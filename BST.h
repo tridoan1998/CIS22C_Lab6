@@ -54,15 +54,15 @@ private:
     //private helper function for the destructor
     //recursively frees the memory in the BST
 
-    bool searchNode(Node* root, bstdata data);
+    	bool searchNode(Node* root, bstdata data) const;
     //recursive helper function to search
     //returns whether the value is found in the tree
 
-    bstdata minimum(Node* root) const;
+    	bstdata minimum(Node* root) const;
     //recursive helper function to minimum
     //returns the minimum value in the tree
 
-    bstdata maximum(Node* root) const;
+    	bstdata maximum(Node* root) const;
     //recursive helper function to maximum
     //returns the maximum value in the tree
 
@@ -70,12 +70,12 @@ private:
     //recursive helper function to remove
     //removes data from the tree
 
-    void getSize(Node* root, int& size) const;
+    	void getSize(Node* root, int& size) const;
     //recursive helper function to the size function
     //calculates the size of the tree
     //stores the result in size
 
-    int getHeight(Node* root) const;
+    	int getHeight(Node* root) const;
     //recursive helper function to the height function
     //returns the height of the tree
 
@@ -115,7 +115,7 @@ public:
     	int getHeight() const;
     //returns the height of the tree
 
-    bool search(bstdata data) const;
+    	bool search(bstdata data) const;
     //returns whether the data is found in the tree
     //pre: !isEmpty()
 
@@ -156,21 +156,26 @@ BST<bstdata>::BST()
 template <class bstdata>
 BST<bstdata>::~BST()
 {
-    freeNode(Node* root);
+    freeNode(root);
 }
 
 template <class bstdata>
 void BST<bstdata>::freeNode(Node* root)
 {
-	freeNode(root->leftchild);
-	freeNode(root->rightchild);
-	delete root;
+	if(root == NULL)
+		return;
+	else
+	{
+		freeNode(root->leftchild);
+		freeNode(root->rightchild);
+		delete root;
+	}
 }
-
+/*
 template <class bstdata>
 BST<bstdata>::BST(const BST &bst)
 {
-   copyNode(Node* copy);
+   copyNode(root);
 }
 
 template <class bstdata>
@@ -181,104 +186,10 @@ void BST<bstdata>::copyNode(Node* copy)
 	 copyNode(copy->data->rightchild);
 }
 
-/****************access functions********************/
-template <class bstdata>
-bstdata BST<bstdata>::minimum() const
-{
-	minimum(root);
-}
+*/
 
-template <class bstdata>
-bstdata BST<bstdata>::minimum(Node* root) const
-{
-	if(root==NULL)
-		return;
-	else
-	{
-		minimum(root->leftchild);
-		cout << root->data;
-		cout << endl;
-	}
-}
-
-template <class bstdata>
-bstdata BST<bstdata>::maximum() const
-{
-	if(root == NULL)
-		return;
-	else
-	{
-		maximum(root->rightchild);
-		cout << root->data;
-		cout << endl;
-	}
-}
-
-template <class bstdata>
-bool BST<bstdata>::isEmpty() const
-{
-	if(root->data == NULL)
-		return true;
-	else
-		return false;
-}
-
-template <class bstdata>
-int BST<bstdata>::getSize() const
-{
-	getSize(root, size);
-}
-
-template <class bstdata>
-void BST<bstdata>::getSize(Node* root, int& size) const
-{
-	size = 0;
-	if(root == NULL)
-		return;
-	else
-	{
-		size++;
-		getSize(root->leftchild);
-		getSize(root->rightchild);
-	}
-	return size;
-}
-
-template <class bstdata>
-bstdata BST<bstdata>::getRoot() const
-{
-	return root->data;
-}
-
-template <class bstdata>
-int BST<bstdata>::getHeight() const
-{
-	int size = 0;
-	if(root == NULL)
-		return;
-	else
-	{
-		size++;
-		getHeight(root->leftchild);
-	}
-	return size;
-}
 
 /***************manipulation procedures***************/
-
-
-template <class bstdata>
-void BST<bstdata>::remove(bstdata data)
-{
-
-}
-
-template <class bstdata>
-BST<bstdata>::Node* deleteNode(Node* root, bstdata data)
-{
-
-}
-
 
 template <class bstdata>
 void BST<bstdata>::insert(bstdata data)
@@ -300,7 +211,7 @@ void BST<bstdata>::insertNode(Node* root, bstdata data)
 	{
 		return;
 	}
-	if(root->data > data)
+	else if(root->data > data)
 	{
 		if(root->leftchild == NULL)
 		{
@@ -308,7 +219,7 @@ void BST<bstdata>::insertNode(Node* root, bstdata data)
 		}
 		else
 		{
-			return insertNode(root->leftchild);
+			return insertNode(root->leftchild, data);
 		}
 	}
 	else
@@ -319,13 +230,163 @@ void BST<bstdata>::insertNode(Node* root, bstdata data)
 		}
 		else
 		{
-			insertNode(root->rightchild);
+			insertNode(root->rightchild, data);
 		}
 
 	}
 }
 
+template <class bstdata>
+bool BST<bstdata>::search(bstdata data) const
+{
+	//Add code to check for the precondition here
+	if(data == root->data)
+		return true;
+	else
+		searchNode(root, data); //call helper function
+}
+
+template <class bstdata>
+bool BST<bstdata>::searchNode(Node* root, bstdata data) const
+{
+	if(root->data == data)
+		return true;
+	else if(root->data < data)
+		{
+			if(root->leftchild == NULL)
+				return false;
+			else
+				searchNode(root->leftchild, data);
+		}
+	else
+		{
+		if(root->rightchild == NULL)
+			return false;
+		else
+			searchNode(root->rightchild, data);
+		}
+	return false;
+}
+
+
+
+/****************access functions********************/
+
+template <class bstdata>
+bool BST<bstdata>::isEmpty() const
+{
+	return (getSize() == 0);
+}
+
+template <class bstdata>
+bstdata BST<bstdata>::getRoot() const
+{
+	assert(!isEmpty());
+	return root->data;
+}
+
+template <class bstdata>
+int BST<bstdata>::getSize() const
+{
+	int size = 0;
+	getSize(root, size);
+	return size;
+}
+
+template <class bstdata>
+void BST<bstdata>::getSize(Node* root, int& size) const
+{
+	if(root == NULL)
+		return;
+	else
+	{
+		size++;
+		getSize(root->leftchild, size);
+		getSize(root->rightchild, size);
+	}
+}
+
+
+/*
+template <class bstdata>
+void BST<bstdata>::remove(bstdata data)
+{
+	Node* BST<bstdata>::deleteNode(Node* root, bstdata data);
+}
+
+template <class bstdata>
+typename BST<bstdata>::Node* BST<bstdata>::deleteNode(Node* root, bstdata data)
+{
+	if(root == NULL)
+		return root;
+	if(data < root->data)
+		root->leftchild = deleteNode(root->leftchild, data);
+}
+*/
+
+
+
+template <class bstdata>
+int BST<bstdata>::getHeight() const
+{
+	return getHeight(root);
+}
+
+template <class bstdata>
+int BST<bstdata>::getHeight(Node* root) const
+{
+	if(root == NULL)
+		return -1;
+	else
+	{
+		if(getHeight(root->leftchild) >= getHeight(root->rightchild))
+			return 1+getHeight(root->leftchild);
+		else
+			return 1+getHeight(root->rightchild);
+	}
+}
+
+template <class bstdata>
+bstdata BST<bstdata>::minimum() const
+{
+	assert(!isEmpty());
+	return minimum(root);
+}
+
+template <class bstdata>
+bstdata BST<bstdata>::minimum(Node* root) const
+{
+	if(root->leftchild == NULL)
+		return root->data;
+	else
+		return minimum(root->leftchild);
+}
+
+template <class bstdata>
+bstdata BST<bstdata>::maximum() const
+{
+	assert(!isEmpty());
+	maximum(root);
+}
+
+template <class bstdata>
+bstdata BST<bstdata>::maximum(Node* root) const
+{
+	if(root->rightchild == NULL)
+		return root->data;
+	else
+		return maximum(root->rightchild);
+}
+
+
 /************ additional functions ************/
+
+template <class bstdata>
+void BST<bstdata>::inOrderPrint(ostream& out) const
+{
+    inOrderPrint(out, root);
+    cout << endl;
+}
 
 template <class bstdata>
 void BST<bstdata>::inOrderPrint(ostream& out, Node* root) const
@@ -340,11 +401,11 @@ void BST<bstdata>::inOrderPrint(ostream& out, Node* root) const
 	}
 }
 
-template <class bstdata>
-void BST<bstdata>::inOrderPrint(ostream& out) const
+template <typename bstdata>
+void BST<bstdata>::preOrderPrint(ostream& out) const
 {
-    inOrderPrint(out, root);
-    cout << endl;
+	preOrderPrint(out, root);
+	cout << endl;
 }
 
 template <typename bstdata>
@@ -361,9 +422,9 @@ void BST<bstdata>::preOrderPrint(ostream& out, Node* root) const
 }
 
 template <typename bstdata>
-void BST<bstdata>::preOrderPrint(ostream& out) const
+void BST<bstdata>::postOrderPrint(ostream& out) const
 {
-	preOrderPrint(out, root);
+	postOrderPrint(out, root);
 	cout << endl;
 }
 
@@ -379,14 +440,5 @@ void BST<bstdata>::postOrderPrint(ostream& out, Node* root) const
 		cout << root->data << " ";
 	}
 }
-
-
-template <typename bstdata>
-void BST<bstdata>::postOrderPrint(ostream& out) const
-{
-	postOrderPrint(out, root);
-	cout << endl;
-}
-
 
 #endif /* BST_H_ */
