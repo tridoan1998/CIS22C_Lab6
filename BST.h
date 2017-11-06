@@ -171,22 +171,30 @@ void BST<bstdata>::freeNode(Node* root)
 		delete root;
 	}
 }
-/*
-template <class bstdata>
+
+template <typename bstdata>
 BST<bstdata>::BST(const BST &bst)
 {
-   copyNode(root);
+	if (bst.root == NULL) root = NULL;        // WHAT'S THE DIFFERENCE BETWEEN USING . AND ->
+	else
+	{
+		//root = new Node(bst.getRoot());
+		copyNode(bst.root);
+	}
 }
 
-template <class bstdata>
+template <typename bstdata>
 void BST<bstdata>::copyNode(Node* copy)
 {
-	 root = copy->data;
-	 copyNode(copy->data->leftchild);
-	 copyNode(copy->data->rightchild);
+	if (copy == NULL) return;
+	else
+	{
+		insert(copy->data);
+		copyNode(copy->leftchild);
+		copyNode(copy->rightchild);
+	}
 }
 
-*/
 
 
 /***************manipulation procedures***************/
@@ -306,24 +314,19 @@ void BST<bstdata>::getSize(Node* root, int& size) const
 	}
 }
 
-
-/*
-template <class bstdata>
+template <typename bstdata>
 void BST<bstdata>::remove(bstdata data)
 {
-	Node* BST<bstdata>::deleteNode(Node* root, bstdata data);
+	assert(!isEmpty());
+	assert(search(data));      // isEmpty() is actually already enforced in this
+	deleteNode(root, data);
 }
 
 template <class bstdata>
 typename BST<bstdata>::Node* BST<bstdata>::deleteNode(Node* root, bstdata data)
 {
-	if(root == NULL)
-		return root;
-	if(data < root->data)
-		root->leftchild = deleteNode(root->leftchild, data);
-}
-*/
 
+}
 
 
 template <class bstdata>
