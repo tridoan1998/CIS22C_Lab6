@@ -1,0 +1,70 @@
+search(root, data)
+	if(root == data)
+		return true;
+	else if(root->data > data)
+		if (root->leftchild == NULL) 
+			return false;
+		else
+		return search(root->leftchild, data);
+	else 
+		if(root->rightchild == NULL)
+			return false;
+		else 
+		return search(root->righthchild, data);
+	
+
+insert(data)
+{
+	if(root == NULL) 
+		new node= new Node(data);
+	else 
+		insertNode(root, data);	
+}
+
+insertNode(root, data)
+{
+	if(root->data == data)
+		return;
+	else if(root->data > data)
+	{	if(root->leftchild == NULL) root->leftchild = new Node(data);
+		else 
+		insertNode(root->leftchild, data);
+	}
+	else
+	{
+		if(root-?rigthchild ==NULL) root->rightchild = new Node(data);
+		else
+		insertNode(root->rightchild, data);
+	}
+}
+
+freeNode(root)
+{
+	if(root == NULL)
+		return;
+	else
+	freeNode(root->leftchild);
+
+}
+
+BSt &bst
+root = bst.root;
+if(bst.root == NULL) 
+	root = NULL;
+else 
+{
+	root = new Node(bst.getRoot());
+	
+} 
+
+copyNode(Node* copy)
+{
+	if(copy ==  NULL)
+		return;
+	else 
+	{
+		insert(copy->data);
+		copyNode(copy->leftchild);
+		copyNode(copy->rightchild);\
+	}
+}
